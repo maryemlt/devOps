@@ -70,11 +70,12 @@ jobs:
 
       # --- DEPLOY K8S ---
       - name: Deploy to Kubernetes
+        if: false
         env:
           KUBECONFIG_DATA: ${{ secrets.KUBECONFIG }}
         run: |
           echo "$KUBECONFIG_DATA" | base64 -d > kubeconfig
           export KUBECONFIG=$PWD/kubeconfig
-          kubectl apply --validate=false -f k8s/
+          kubectl apply -f k8s/
           kubectl set image deployment/spring-app-deployment spring-app=mariam651/projetmpisi2-app:latest
           kubectl rollout status deployment/spring-app-deployment
